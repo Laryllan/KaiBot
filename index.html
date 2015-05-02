@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KaiBot</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="KaiBot">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet/less" type="text/css" href="css/style.less" />
+		
+		<script src="js/jquery.js"></script>
+		<script src="js/bot.js"></script>
+		<script src="phonegap.js"></script>
+		<script src="js/less.js"></script>		
+	</head>
+	<body>
+		<div id="tabs">
+			<div class="page active" data-tab="connection">Connection</div>
+			<div class="page" data-tab="walk">Walk</div>
+			<div class="page" data-tab="updown"></div>
+			<div class="page" data-tab="move"></div>
+			<div class="page" data-tab="4"></div>
+			<div class="page" data-tab="system">
+				<span class="button" data-action="reload"><span class="text">Neu laden</span></span>
+				<span class="button" data-action="reset"><span class="text">Reset</span></span>
+			</div>
+			
+			<div class="buttons hidden">
+				<span class="button active" data-tab="connection"><span class="text">Connection</span></span>
+				<span class="button disabled" data-tab="walk"><span class="text">Laufen/drehen</span></span>
+				<span class="button disabled" data-tab="updown"><span class="text">hoch/runter</span></span>
+				<span class="button disabled" data-tab="move"><span class="text">Körper bewegen</span></span>
+				<span class="button disabled" data-tab="4"><span class="text">4</span></span>
+				<span class="button" data-tab="system"><span class="text">System</span></span>
+			</div>
+		</div>
+	</body>
+</html>
