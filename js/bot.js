@@ -156,13 +156,21 @@ var Bot = {
 			});
 			
 			//#region tab:walk
+			(new Bot.Joystick({
+				"axis": "both",
+				"min": -10,
+				"max": 10,
+				"callback": function(x, y) {
+					Bot.Connection.send("walk_" + x + "_" + y);
+				}
+			})).container.appendTo("#tabs > .page[data-tab='walk']");
 			//#endregion
 			
 			//#region tab:up/down
 			(new Bot.Joystick({
 				"axis": "y",
-				"min": -5,
-				"max": 5,
+				"min": -10,
+				"max": 10,
 				"callback": function(x, y) {
 					Bot.Connection.send("updown_" + y);
 				}
@@ -178,6 +186,17 @@ var Bot = {
 					Bot.Connection.send("move_" + x + "_" + y);
 				}
 			})).container.appendTo("#tabs > .page[data-tab='move']");
+			//#endregion
+			
+			//#region tab:rotate
+			(new Bot.Joystick({
+				"axis": "x",
+				"min": -10,
+				"max": 10,
+				"callback": function(x, y) {
+					Bot.Connection.send("rotate_" + x);
+				}
+			})).container.appendTo("#tabs > .page[data-tab='rotate']");
 			//#endregion
 			
 			//#region tab:system
