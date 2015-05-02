@@ -35,7 +35,7 @@
   <preference name="phonegap-version" value="3.6.3" />
 
   <preference name="android-windowSoftInputMode" value="stateHidden|adjustResize" />
-  <preference name="orientation" value="portrait" />
+  <preference name="orientation" value="landscape" />
   <platform name="ios">
     <preference name="fullscreen" value="true" />
   </platform>
