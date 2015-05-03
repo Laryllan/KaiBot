@@ -11,6 +11,7 @@ var Bot = {
 		}, 2000);
 		//Bot.Connection.connected("12345");
 	},
+	"joysticks": {},
 	"Connection": {
 		"connected": false,
 		"search": function() {
@@ -156,47 +157,47 @@ var Bot = {
 			});
 			
 			//#region tab:walk
-			(new Bot.Joystick({
+			Bot.joysticks["walk"] = new Bot.Joystick({
+				"key": "walk",
 				"axis": "both",
-				"min": -10,
-				"max": 10,
 				"callback": function(x, y) {
 					Bot.Connection.send("walk_" + x + "_" + y);
 				}
-			})).container.appendTo("#tabs > .page[data-tab='walk']");
+			});
+			Bot.joysticks["walk"].container.appendTo("#tabs > .page[data-tab='walk']");
 			//#endregion
 			
 			//#region tab:up/down
-			(new Bot.Joystick({
+			Bot.joysticks["updown"] = new Bot.Joystick({
+				"key": "updown",
 				"axis": "y",
-				"min": -10,
-				"max": 10,
 				"callback": function(x, y) {
 					Bot.Connection.send("updown_" + y);
 				}
-			})).container.appendTo("#tabs > .page[data-tab='updown']");
+			});
+			Bot.joysticks["updown"].container.appendTo("#tabs > .page[data-tab='updown']");
 			//#endregion
 			
 			//#region tab:move
-			(new Bot.Joystick({
+			Bot.joysticks["move"] = new Bot.Joystick({
+				"key": "move",
 				"axis": "all",
-				"min": -10,
-				"max": 10,
 				"callback": function(x, y) {
 					Bot.Connection.send("move_" + x + "_" + y);
 				}
-			})).container.appendTo("#tabs > .page[data-tab='move']");
+			});
+			Bot.joysticks["move"].container.appendTo("#tabs > .page[data-tab='move']");
 			//#endregion
 			
 			//#region tab:rotate
-			(new Bot.Joystick({
+			Bot.joysticks["rotate"] = new Bot.Joystick({
+				"key": "rotate",
 				"axis": "x",
-				"min": -10,
-				"max": 10,
 				"callback": function(x, y) {
 					Bot.Connection.send("rotate_" + x);
 				}
-			})).container.appendTo("#tabs > .page[data-tab='rotate']");
+			});
+			Bot.joysticks["rotate"].container.appendTo("#tabs > .page[data-tab='rotate']");
 			//#endregion
 			
 			//#region tab:system
@@ -254,7 +255,9 @@ var Bot = {
 					self.axis = options.axis;
 				}
 				
-				self.stick = jQuery("<div class=\"stick\"></div>").appendTo(self.container);
+				self.frame = jQuery("<div class=\"frame\"></div>").appendTo(self.container);
+				
+				self.stick = jQuery("<div class=\"stick\"></div>").appendTo(self.frame);
 				self.stick.on({
 					"touchstart mousedown": function(evt) {
 						var pos = self.pos(evt);
@@ -285,8 +288,8 @@ var Bot = {
 							self.y = 0;
 						
 							self.stick.animate({
-								"left": "100px",
-								"top": "100px"
+								"left": self.options.axis == "y" ? "30px" : "100px",
+								"top": self.options.axis == "x" ? "30px" : "100px"
 							}, 200);
 													
 							if(typeof self.options.callback === "function") self.options.callback(0, 0);
@@ -296,7 +299,7 @@ var Bot = {
 					}
 				});
 				
-				self.container.on({
+				self.frame.on({
 					"touchmove mousemove": function(evt) {
 						if(!self.active) return;
 						
@@ -322,10 +325,24 @@ var Bot = {
 							if(self.axis == "x") delta.y = 0;
 							if(self.axis == "y") delta.x = 0;
 							
-							self.stick.css({
-								"left": Math.max(25, Math.min(175, 100 + delta.x)) + "px",
-								"top": Math.max(25, Math.min(175, 100 + delta.y)) + "px"
-							});
+							if(self.options.axis == "x") {
+								self.stick.css({
+									"left": Math.max(25, Math.min(175, 100 + delta.x)) + "px",
+									"top": Math.max(25, Math.min(175, 30 + delta.y)) + "px"
+								});
+							}
+							else if(self.options.axis == "y") {
+								self.stick.css({
+									"left": Math.max(25, Math.min(175, 30 + delta.x)) + "px",
+									"top": Math.max(25, Math.min(175, 100 + delta.y)) + "px"
+								});
+							}
+							else {
+								self.stick.css({
+									"left": Math.max(25, Math.min(175, 100 + delta.x)) + "px",
+									"top": Math.max(25, Math.min(175, 100 + delta.y)) + "px"
+								});
+							}
 							
 							var d = self.options.max - self.options.min;
 							var x = self.options.min + Math.floor(d * (delta.x + 100) / 200);
@@ -340,6 +357,20 @@ var Bot = {
 						}
 					}
 				});
+				
+				self.buttons = jQuery("<div class=\"buttons\"></div>").appendTo(self.container);
+				jQuery("<span class=\"button\" data-value=\"5\">5</span>").appendTo(self.buttons);
+				jQuery("<span class=\"button\" data-value=\"10\">10</span>").appendTo(self.buttons);
+				jQuery("<span class=\"button\" data-value=\"25\">25</span>").appendTo(self.buttons);
+				jQuery("<span class=\"button\" data-value=\"100\">100</span>").appendTo(self.buttons);
+				jQuery("<span class=\"button\" data-value=\"225\">225</span>").appendTo(self.buttons);
+				self.buttons.find(".button").on("click touchup", function() {
+					var val = jQuery(this).attr("data-value");
+					self.btn(parseInt(val, 10));
+				});
+				
+				var oldVal = localStorage.getItem("joystickvalue_" + self.options.key) || 10;
+				if(oldVal) self.btn(oldVal);
 			},
 			"pos": function(evt) {
 				var result = {
@@ -364,6 +395,15 @@ var Bot = {
 				}
 								
 				return result;				
+			},
+			"btn": function(val) {
+				self.buttons.find(".button").removeClass("active");
+				self.buttons.find(".button[data-value='" + val + "']").addClass("active");
+				
+				self.options.min = -val;
+				self.options.max = val;
+				
+				if(self.options.key) localStorage.setItem("joystickvalue_" + self.options.key, val);
 			}
 		};
 		

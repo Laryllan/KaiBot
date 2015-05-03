@@ -275,34 +275,88 @@ body {
 	top:50px;
 	
 	width:200px;
-	height:200px;
+	height:250px;
 	
-	background-color:#AAA;
-	box-shadow: 0px 0px 20px #000 inset;
-	
-	> .stick {
+	> .frame {
 		position:absolute;
+				
+		left:0px;
+		top:0px;
 		
-		left:100px;
-		top:100px;
-		margin-left:-25px;
-		margin-top:-25px;
+		width:200px;
+		height:200px;
 		
-		width:50px;
-		height:50px;
+		background-color:#AAA;
+		box-shadow: 0px 0px 20px #000 inset;
 		
-		background-color:rgba(50, 50, 50, 0.8);
-		border-radius:50%;
-		box-shadow:0px 0px 10px rgba(0, 0, 0, 0.5);
-		
-		&.active {
-			margin-left:-40px;
-			margin-top:-40px;
+		> .stick {
+			position:absolute;
 			
-			width:80px;
-			height:80px;
+			left:50%;
+			top:50%;
+			margin-left:-25px;
+			margin-top:-25px;
 			
-			background-color:rgba(255, 50, 50, 0.8);
+			width:50px;
+			height:50px;
+			
+			background-color:rgba(50, 50, 50, 0.8);
+			border-radius:50%;
+			box-shadow:0px 0px 10px rgba(0, 0, 0, 0.5);
+			
+			&.active {
+				margin-left:-40px;
+				margin-top:-40px;
+				
+				width:80px;
+				height:80px;
+				
+				background-color:rgba(255, 50, 50, 0.8);
+			}
 		}
+	}
+	
+	> .buttons {
+		position:absolute;
+		display:flex;
+		
+		left:0px;
+		bottom:0px;
+		
+		width:100%;
+		height:40px;
+		
+		> .button {
+			position:relative;
+			display:inline-block;
+			
+			width:36px;
+			height:32px;
+			
+			line-height:32px;
+			
+			text-align:center;
+			
+			&.active {
+				background-color:#AAA;
+				box-shadow: 0px 0px 20px #000 inset;
+			}
+		}
+	}
+	
+	&[data-axis='x'] > .frame {
+		left:0px;
+		top:70px;
+		
+		width:200px;
+		height:60px;
+	}
+	
+	&[data-axis='y'] > .frame {
+		left:70px;
+		top:0px;
+		
+		width:60px;
+		height:200px;
 	}
 }
