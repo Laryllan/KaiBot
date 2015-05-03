@@ -358,13 +358,13 @@ var Bot = {
 					}
 				});
 				
-				self.buttons = jQuery("<div class=\"buttons\"></div>").appendTo(self.container);
-				jQuery("<span class=\"button\" data-value=\"5\">5</span>").appendTo(self.buttons);
-				jQuery("<span class=\"button\" data-value=\"10\">10</span>").appendTo(self.buttons);
-				jQuery("<span class=\"button\" data-value=\"25\">25</span>").appendTo(self.buttons);
-				jQuery("<span class=\"button\" data-value=\"100\">100</span>").appendTo(self.buttons);
-				jQuery("<span class=\"button\" data-value=\"225\">225</span>").appendTo(self.buttons);
-				self.buttons.find(".button").on("click touchup", function() {
+				self.ranges = jQuery("<div class=\"ranges\"></div>").appendTo(self.container);
+				jQuery("<span class=\"range\" data-value=\"5\">5</span>").appendTo(self.ranges);
+				jQuery("<span class=\"range\" data-value=\"10\">10</span>").appendTo(self.ranges);
+				jQuery("<span class=\"range\" data-value=\"25\">25</span>").appendTo(self.ranges);
+				jQuery("<span class=\"range\" data-value=\"100\">100</span>").appendTo(self.ranges);
+				jQuery("<span class=\"range\" data-value=\"225\">225</span>").appendTo(self.ranges);
+				self.ranges.find(".range").on("touchend", function() {
 					var val = jQuery(this).attr("data-value");
 					self.btn(parseInt(val, 10));
 				});
@@ -397,8 +397,8 @@ var Bot = {
 				return result;				
 			},
 			"btn": function(val) {
-				self.buttons.find(".button").removeClass("active");
-				self.buttons.find(".button[data-value='" + val + "']").addClass("active");
+				self.ranges.find(".range").removeClass("active");
+				self.ranges.find(".range[data-value='" + val + "']").addClass("active");
 				
 				self.options.min = -val;
 				self.options.max = val;
