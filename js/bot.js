@@ -208,6 +208,25 @@ var Bot = {
 			jQuery("#tabs > .page[data-tab='system'] .button[data-action='reset']").on("touchend mouseup", function() {
 				Bot.Connection.send("reset");
 			});
+			
+			jQuery("#tabs > .page[data-tab='system'] .button[data-action='1']").on("touchend mouseup", function() {
+				Bot.Connection.send("1");
+			});
+			jQuery("#tabs > .page[data-tab='system'] .button[data-action='2']").on("touchend mouseup", function() {
+				Bot.Connection.send("2");
+			});
+			jQuery("#tabs > .page[data-tab='system'] .button[data-action='3']").on("touchend mouseup", function() {
+				Bot.Connection.send("3");
+			});
+			jQuery("#tabs > .page[data-tab='system'] .button[data-action='4']").on("touchend mouseup", function() {
+				Bot.Connection.send("4");
+			});
+			jQuery("#tabs > .page[data-tab='system'] .button[data-action='5']").on("touchend mouseup", function() {
+				Bot.Connection.send("5");
+			});
+			jQuery("#tabs > .page[data-tab='system'] .button[data-action='6']").on("touchend mouseup", function() {
+				Bot.Connection.send("6");
+			});
 			//#endregion
 		}
 	},
